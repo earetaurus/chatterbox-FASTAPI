@@ -31,12 +31,7 @@ _Made with ♥️ by <a href="https://resemble.ai" target="_blank"><img width="1
 ## 🚀 Quick Start
 
 ### Installation
-
-```shell
-pip install chatterbox-tts
-```
-
-Or install from source:
+ install from source:
 ```shell
 git clone https://github.com/groxaxo/chatterbox-FASTAPI.git
 cd chatterbox-FASTAPI

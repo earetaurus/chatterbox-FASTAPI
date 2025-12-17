@@ -273,4 +273,3 @@ This project builds upon excellent work from the community:
 This is a modified version of Chatterbox. For production use with guarantees and support, consider [Resemble AI's TTS service](https://resemble.ai).
 
 Don't use this model for malicious purposes. Prompts are sourced from freely available data on the internet.
-

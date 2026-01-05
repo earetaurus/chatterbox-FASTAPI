@@ -91,8 +91,69 @@ The language will be automatically detected from the model name!
 
 ## 🚀 Quick Start
 
-### Installation
- install from source:
+### 🐳 Docker (Recommended)
+
+The easiest way to get started is using Docker:
+
+```shell
+# Clone the repository
+git clone https://github.com/groxaxo/chatterbox-FASTAPI.git
+cd chatterbox-FASTAPI
+
+# Start with docker-compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+The server will be available at:
+- **Demo UI**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+
+#### Docker Environment Variables
+
+Configure the server by creating a `.env` file or setting environment variables:
+
+```env
+# Server Configuration
+PORT=8000
+
+# TTS Model Settings
+CHATTERBOX_TEMPERATURE=0.5      # Sampling temperature (0.0-1.0)
+CHATTERBOX_CFG_WEIGHT=0.35      # Classifier-free guidance weight
+CHATTERBOX_EXAGGERATION=1.0     # Expressiveness level
+
+# GPU Support (requires nvidia-docker)
+# CUDA_VISIBLE_DEVICES=0
+```
+
+#### Docker with GPU Support
+
+To use GPU acceleration with Docker:
+
+1. Install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
+2. Uncomment the GPU sections in `docker-compose.yml`
+3. Start the container:
+
+```shell
+docker-compose up -d
+```
+
+#### Manual Docker Build
+
+```shell
+# Build the image
+docker build -t chatterbox-fastapi .
+
+# Run the container
+docker run -p 8000:8000 -v $(pwd)/voice_samples:/app/voice_samples chatterbox-fastapi
+```
+
+### 📦 Manual Installation
+
+Install from source:
 ```shell
 git clone https://github.com/groxaxo/chatterbox-FASTAPI.git
 cd chatterbox-FASTAPI
@@ -111,6 +172,18 @@ uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
 The server will start on `http://localhost:8000`
+
+## 🌐 Web Demo Interface
+
+Access the interactive web demo at `http://localhost:8000` to:
+
+- 🎙️ **Test TTS in your browser** - No coding required
+- 🌍 **Try 23+ languages** - Select from the dropdown
+- 🔊 **Real-time playback** - Generate and listen instantly
+- ⚙️ **Adjust parameters** - Control speed, voice, and format
+- 📥 **Download audio** - Save generated speech files
+
+Perfect for testing the API before integrating it into your application!
 
 ## 📖 API Usage
 

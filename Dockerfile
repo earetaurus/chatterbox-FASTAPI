@@ -1,6 +1,5 @@
-# Multi-stage Dockerfile for Chatterbox FastAPI
-# Stage 1: Base image with dependencies
-FROM python:3.11-slim as base
+# Dockerfile for Chatterbox FastAPI
+FROM python:3.11-slim
 
 # Set working directory
 WORKDIR /app
@@ -13,9 +12,6 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Stage 2: Builder stage
-FROM base as builder
-
 # Copy project files
 COPY pyproject.toml ./
 COPY src/ ./src/
@@ -24,18 +20,6 @@ COPY api/ ./api/
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -e .
-
-# Stage 3: Runtime stage
-FROM base as runtime
-
-# Copy installed packages from builder
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-
-# Copy application code
-COPY src/ /app/src/
-COPY api/ /app/api/
-COPY pyproject.toml /app/
 
 # Create directory for voice samples
 RUN mkdir -p /app/voice_samples
@@ -52,7 +36,7 @@ EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
 
 # Run the application
 CMD ["python", "-m", "api.main"]

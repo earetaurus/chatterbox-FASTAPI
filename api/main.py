@@ -13,6 +13,7 @@ OpenAI-compatible text-to-speech API with multilingual support
 """
 
 import logging
+import os
 import sys
 from contextlib import asynccontextmanager
 from typing import Optional
@@ -21,7 +22,8 @@ import torch
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from api.routers.openai import router as openai_router
 from api.services.tts_service import get_tts_service
@@ -103,10 +105,23 @@ app.add_middleware(
 # Include routers
 app.include_router(openai_router, prefix="/v1")
 
+# Mount static files for frontend demo
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
 
 @app.get("/")
 async def root():
     """Root endpoint with API information"""
+    # Serve the demo page if it exists
+    static_dir = os.path.join(os.path.dirname(__file__), "static")
+    index_file = os.path.join(static_dir, "index.html")
+    
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    
+    # Otherwise return JSON info
     return {
         "name": "Chatterbox FastAPI",
         "description": "OpenAI-compatible text-to-speech API with multilingual support",

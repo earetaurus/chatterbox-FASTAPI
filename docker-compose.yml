@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  chatterbox:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatterbox-fastapi
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - CHATTERBOX_TEMPERATURE=${CHATTERBOX_TEMPERATURE:-0.5}
+      - CHATTERBOX_CFG_WEIGHT=${CHATTERBOX_CFG_WEIGHT:-0.35}
+      - CHATTERBOX_EXAGGERATION=${CHATTERBOX_EXAGGERATION:-1.0}
+      # Uncomment to use GPU (requires nvidia-docker)
+      # - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      # Mount voice samples directory for custom voices
+      - ./voice_samples:/app/voice_samples
+      # Mount cache for model downloads
+      - model-cache:/root/.cache
+    restart: unless-stopped
+    # Uncomment to enable GPU support (requires nvidia-docker)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  model-cache:

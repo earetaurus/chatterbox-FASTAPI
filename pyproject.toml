@@ -3,17 +3,20 @@ name = "chatterbox-tts"
 version = "0.1.6"
 description = "Chatterbox: Open Source TTS and Voice Conversion by Resemble AI"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = "==3.12.*"
 license = {file = "LICENSE"}
 authors = [
     {name = "resemble-ai", email = "engineering@resemble.ai"}
 ]
 dependencies = [
-    "numpy>=1.24.0,<1.26.0",
+    "numpy",
     "librosa==0.11.0",
     "s3tokenizer",
-    "torch==2.6.0",
-    "torchaudio==2.6.0",
+    "torch @ https://rocm.nightlies.amd.com/v2/gfx110X-dgpu/torch-2.9.1%2Brocm7.10.0a20251120-cp312-cp312-win_amd64.whl",
+    "torchaudio @ https://rocm.nightlies.amd.com/v2/gfx110X-dgpu/torchaudio-2.9.0%2Brocm7.10.0a20251120-cp312-cp312-win_amd64.whl",
+    "rocm[libraries] @ https://rocm.nightlies.amd.com/v2/gfx110X-dgpu/rocm-7.10.0a20251120.tar.gz",
+    "rocm-sdk-core @ https://rocm.nightlies.amd.com/v2/gfx110X-dgpu/rocm_sdk_core-7.10.0a20251120-py3-none-win_amd64.whl",
+    "rocm-sdk-libraries-gfx110x-dgpu @ https://rocm.nightlies.amd.com/v2/gfx110X-dgpu/rocm_sdk_libraries_gfx110x_dgpu-7.10.0a20251120-py3-none-win_amd64.whl",
     "transformers==4.46.3",
     "diffusers==0.29.0",
     "conformer==0.3.2",
@@ -23,6 +26,7 @@ dependencies = [
     "gradio==5.44.1",
     "pyloudnorm",
     "omegaconf",
+    "ml-dtypes>=0.5.4",
     "attrs>=23.0.0",
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
@@ -41,3 +45,6 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src", "."]
 include = ["chatterbox*", "api*"]
+
+[tool.pip]
+extra-index-url = ["https://rocm.nightlies.amd.com/v2/gfx110X-dgpu/"]
